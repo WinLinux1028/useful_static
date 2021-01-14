@@ -15,19 +15,16 @@ impl<T> Global<T> {
             *global = Global::Yes(Mutex::new(content));
         }
     }
+}
+
+impl<T> std::ops::Deref for Global<T>{
+    type Target = Mutex<T>;
 
     //Third, you can use global variables like std::sync::Mutex.
-    pub fn lock(&self) -> std::sync::LockResult<std::sync::MutexGuard<T>> {
+    fn deref(&self) -> &Mutex<T> {
         match self {
             Global::No => panic!("You have to do .set method before use this."),
-            Global::Yes(ref a) => a.lock(),
-        }
-    }
-
-    pub fn try_lock(&self) -> std::sync::TryLockResult<std::sync::MutexGuard<T>> {
-        match self {
-            Global::No => panic!("You have to do .set method before use this."),
-            Global::Yes(ref a) => a.try_lock(),
+            Global::Yes(ref a) => a,
         }
     }
 }
