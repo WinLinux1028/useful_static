@@ -25,11 +25,13 @@ use std::sync::Mutex;
 /// }
 /// ```
 pub struct Global<T> {
+    #[inline(always)]
     content: RawGlobal<Mutex<T>>,
 }
 
 impl<T> Global<T> {
     ///Create new `Global` instance.
+    #[inline(always)]
     pub const fn new() -> Global<T> {
         Global {
             content: RawGlobal::new(),
@@ -37,6 +39,7 @@ impl<T> Global<T> {
     }
 
     ///Set value to `Global`.
+    #[inline(always)]
     pub fn set(&self, content: T) {
         self.content.set(Mutex::new(content));
     }
@@ -45,6 +48,7 @@ impl<T> Global<T> {
 impl<T> std::ops::Deref for Global<T> {
     type Target = Mutex<T>;
 
+    #[inline(always)]
     fn deref(&self) -> &Self::Target {
         &*self.content
     }
@@ -85,11 +89,13 @@ pub enum RawGlobal<T> {
 
 impl<T> RawGlobal<T> {
     ///Create new `RawGlobal` instance.
+    #[inline(always)]
     pub const fn new() -> RawGlobal<T> {
         RawGlobal::No(None)
     }
 
     /// Set value to `RawGlobal`.
+    #[inline(always)]
     pub fn set(&self, content: T) {
         unsafe {
             let global = self as *const _ as *mut _;
@@ -101,6 +107,7 @@ impl<T> RawGlobal<T> {
 impl<T> std::ops::Deref for RawGlobal<T> {
     type Target = T;
 
+    #[inline(always)]
     fn deref(&self) -> &Self::Target {
         match self {
             RawGlobal::No(_) => panic!("Set value to this variable."),

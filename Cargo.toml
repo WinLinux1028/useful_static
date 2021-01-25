@@ -1,6 +1,6 @@
 [package]
 name = "useful_static"
-version = "0.2.0"
+version = "0.2.1"
 authors = ["WinLinux1028 <exsample@protonmail.com>"]
 edition = "2018"
 license = "MIT"
